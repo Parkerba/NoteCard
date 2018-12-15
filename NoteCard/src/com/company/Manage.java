@@ -53,15 +53,15 @@ public class Manage {
      */
     public static String chooseFile(String[] arr) {
         printArray(arr);
-        while (true) {
             System.out.println("Choose the file you would like to select by entering the number adjacent to the file listed above.");
+        while (true) {
             Scanner reader = new Scanner(System.in);
             int choice = reader.nextInt();
             if (choice < arr.length && choice >= 0) {
                 reader.close();
                 return arr[choice];
             } else {
-                System.out.println("Invalid input try again values but be between 0 and " + (arr.length - 1) + ".");
+                System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
             }
         }
 
