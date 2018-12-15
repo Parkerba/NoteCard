@@ -1,5 +1,11 @@
 package com.company;
 
+/**
+ * @author Parker Amundsen
+ * @version 12/15/2018
+ * @descrip This class encapsulates the the information of a notecard (a question and an answer), for the purposes of the
+ * program.
+ */
 public class NoteCard {
     /**
      * @descrip String data members question and answer encapsulate the two sides of a notecard.

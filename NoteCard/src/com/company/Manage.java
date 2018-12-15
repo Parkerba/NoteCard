@@ -3,7 +3,19 @@ package com.company;
 import java.io.File;
 import java.util.Scanner;
 
+/**
+ * @author Parker Amundsen
+ * @version 12/15/2018
+ * @descrip This class will be used to work with the .txt files that will be used to store the questions and answers
+ * that the notecard objects will be composed of.
+ */
 public class Manage {
+
+    /**
+     *
+     * @param pathname
+     * @return returns an array of the .txt files in parameter specified directory.
+     */
     public static String[] listTxtFiles(String pathname) {
         File dir = new File(pathname);
         String[] filenames = dir.list();
@@ -23,6 +35,10 @@ public class Manage {
         return txtFiles;
     }
 
+    /**
+     * @descrip simply prints a two dimensional array parameter.
+     * @param arr
+     */
     public static void printArray(String[] arr) {
         int i = 0;
         for (String file : arr) {
@@ -30,6 +46,11 @@ public class Manage {
         }
     }
 
+    /**
+     * @descrip
+     * @param arr
+     * @return String filename that is chosen through system input
+     */
     public static String chooseFile(String[] arr) {
         printArray(arr);
         while (true) {
