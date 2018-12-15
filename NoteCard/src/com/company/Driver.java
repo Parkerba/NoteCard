@@ -7,6 +7,9 @@ public class Driver {
 
         System.out.println(melon.getQuestion());
         System.out.println(melon.getAnswer());
+        System.out.println(melon);
+        Manage.printArray(Manage.listTxtFiles("/Users/parkeramundsen/Desktop/NoteCard/NoteCard"));
+        Manage.chooseFile(Manage.listTxtFiles("/Users/parkeramundsen/Desktop/NoteCard/NoteCard"));
 
 
     }
