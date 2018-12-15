@@ -47,9 +47,9 @@ public class Manage {
     }
 
     /**
-     * @descrip
+     * @descrip Asks the user to choose from the available .txt files, returns the users selection.
      * @param arr
-     * @return String filename that is chosen through system input
+     * @return String filename that is chosen through console input
      */
     public static String chooseFile(String[] arr) {
         printArray(arr);
