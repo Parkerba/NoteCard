@@ -1,6 +1,8 @@
 package com.company;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 /**
@@ -50,14 +52,12 @@ public class Manage {
      * @return String filename that is chosen through console input
      * @descrip Asks the user to choose from the available .txt files, returns the users selection.
      */
-    public static String chooseFile(String[] arr) {
+    public static String chooseFile(String[] arr, Scanner reader) {
         printArray(arr);
         System.out.println("Choose the file you would like to select by entering the number adjacent to the file listed above.");
         while (true) {
-            Scanner reader = new Scanner(System.in);
             int choice = reader.nextInt();
             if (choice < arr.length && choice >= 0) {
-                reader.close();
                 return arr[choice];
             } else {
                 System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
@@ -69,7 +69,7 @@ public class Manage {
     /**
      * @param input
      * @return boolean
-     * @descrip returns true/false based on the string param, various options for true/false.
+     * @descrip returns true/false based on the string param, handles various options for true/false.
      */
     public static boolean isTrue(String input) {
         if (input.equalsIgnoreCase("True") || input.equalsIgnoreCase("yes") ||
@@ -80,24 +80,37 @@ public class Manage {
         }
     }
 
-    public static void addFile(File directory, File f) {
+    /**
+     * @descrip moves The File associated with the fileName to the given directory.
+     * @param directory
+     * @param fileName
+     * @param reader
+     */
+    public static void addFile(File directory, String fileName, Scanner reader) {
         if (!directory.exists()) {
             System.out.println("Your destination folder does not exist, would you like to create a new one? (Enter\"YES/NO\" )");
-            Scanner reader = new Scanner(System.in);
             String response = reader.next();
             if (isTrue(response)) {
-                makeDir();
+                makeDir(directory);
+            } else {
+                return;
             }
+            File fileToAdd = new File(fileName);
+            String pathName = new File("").getAbsolutePath();
+            fileToAdd.renameTo(new File(pathName + "/" + directory + "/" + fileName));
+            System.out.println((new File(pathName + "/" + directory + "/" + fileName)));
+            }
+
+
         }
-    }
+
 
 
     /**
      * #descrip makeDir() is used to make a directory
-     * @return
      */
     public static void makeDir() {
-        System.out.println("What would you like to make the section name?");
+        System.out.println("What would you like to name the section?");
         Scanner reader = new Scanner(System.in);
         String sectionName = reader.next();
         File section = new File(sectionName);
@@ -113,6 +126,21 @@ public class Manage {
                 }
 
             }
+        } else if (section.mkdir()) {
+            System.out.println("Section created!");
+        } else {
+            System.out.println("Something went wrong! Your section was not created please try again.");
+        }
+    }
+
+    /**
+     * @escrip overloaded File param makeDir() is used to make a directory
+     */
+    public static void makeDir(File section) {
+        if (section.mkdir()) {
+            System.out.println("Section created!");
+        } else {
+            System.out.println("Something went wrong! Your section was not created please try again.");
         }
     }
 }

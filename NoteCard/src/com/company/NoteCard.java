@@ -38,6 +38,21 @@ public class NoteCard {
         return this.answer;
     }
 
+    /**
+     * Setter for data member answer
+     * @param answer
+     */
+    public void setAnswer(String answer) {
+        this.answer = answer;
+    }
+
+    /**
+     * Setter for data member question
+     * @param question
+     */
+    public void setQuestion(String question) {
+        this.question = question;
+    }
 
     /**
      * @descrip toString() override.
