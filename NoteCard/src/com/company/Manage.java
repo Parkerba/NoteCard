@@ -7,11 +7,29 @@ import java.util.Scanner;
 
 /**
  * @author Parker Amundsen
- * @version 12/15/2018
+ * @version 12/18/2018
  * @descrip This class will be used to work with the .txt files that will be used to store the questions and answers
  * that the notecard objects will be composed of.
  */
 public class Manage {
+
+    private String pathName = new File("programFiles").getAbsolutePath();
+    private File programFilesFolder = new File(pathName);
+
+    /**
+     * @descrip checks to see if the programFiles directory is created, if it is not, the directory is created.
+     */
+    public void checkForProgramFilesFolder() {
+        if (this.programFilesFolder.exists()) {
+            System.out.println("Loading Program Files");
+        } else {
+            try {
+                this.programFilesFolder.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Something went wrong, program files folder not created.");
+            }
+        }
+    }
 
     /**
      * @param pathname
@@ -29,6 +47,26 @@ public class Manage {
         int index = 0;
         for (int i = 0; i < filenames.length; i++) {
             if (filenames[i].endsWith(".txt")) {
+                txtFiles[index++] = filenames[i];
+            }
+
+        }
+        return txtFiles;
+    }
+
+    public static String[] listSections(String pathname) {
+        File dir = new File(pathname);
+        String[] filenames = dir.list();
+        int dirCounter = 0;
+        for (int i = 0; i < filenames.length; i++) {
+            if (new File(pathname + "/" + filenames[i]).isDirectory()) {
+                dirCounter++;
+            }
+        }
+        String[] txtFiles = new String[dirCounter];
+        int index = 0;
+        for (int i = 0; i < filenames.length; i++) {
+            if (new File(pathname + "/" + filenames[i]).isDirectory()) {
                 txtFiles[index++] = filenames[i];
             }
 
@@ -81,10 +119,10 @@ public class Manage {
     }
 
     /**
-     * @descrip moves The File associated with the fileName to the given directory.
      * @param directory
      * @param fileName
      * @param reader
+     * @descrip moves The File associated with the fileName to the given directory.
      */
     public static void addFile(File directory, String fileName, Scanner reader) {
         if (!directory.exists()) {
@@ -96,14 +134,13 @@ public class Manage {
                 return;
             }
             File fileToAdd = new File(fileName);
-            String pathName = new File("").getAbsolutePath();
+            String pathName = new File("programFiles").getAbsolutePath();
             fileToAdd.renameTo(new File(pathName + "/" + directory + "/" + fileName));
             System.out.println((new File(pathName + "/" + directory + "/" + fileName)));
-            }
-
-
         }
 
+
+    }
 
 
     /**
@@ -117,7 +154,7 @@ public class Manage {
         if (section.exists() && section.isDirectory()) {
             System.out.println("This section already exists. Would you like to override the Folder erasing all of its contents?");
             String override = reader.next();
-            if (isTrue(override)){
+            if (isTrue(override)) {
                 section.delete();
                 if (section.mkdir()) {
                     System.out.println("Section created!");
