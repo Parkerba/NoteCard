@@ -7,16 +7,21 @@ import java.util.Scanner;
 public class Driver {
 
     public static void main(String[] args) throws FileNotFoundException {
+        Manage program = new Manage();
+        program.checkForProgramFilesFolder();
         Scanner reader = new Scanner(System.in);
-        String pathName = new File("programFiles").getAbsolutePath();
-        File programFilesFolder = new File(pathName);
+        String programFilesPathName = new File("programFiles").getAbsolutePath();
+        String workingDirectoryPathName = new File("").getAbsolutePath();
 
-        //String file = Manage.chooseFile(Manage.listTxtFiles(pathName), reader);
-        String file1 = Manage.chooseFile(Manage.listSections(pathName), reader);
+        File programFilesFolder = new File(programFilesPathName);
 
-        System.out.println(file1);
-        File directoryTest = new File("programFiles");
-        Manage.addFile(directoryTest, file1, reader);
+        String file = Manage.chooseFile(Manage.listTxtFiles(workingDirectoryPathName), reader);
+        //String file1 = Manage.chooseFile(Manage.listSections(pathName), reader);
+        System.out.println("What directory would you like to add the file to?");
+        reader.nextLine();
+        String sectionName = reader.nextLine();
+        File directoryTest = new File(programFilesPathName + "/" + sectionName);
+        program.addFile(directoryTest, file, reader);
         reader.close();
 
 

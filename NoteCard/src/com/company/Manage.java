@@ -15,6 +15,8 @@ public class Manage {
 
     private String pathName = new File("programFiles").getAbsolutePath();
     private File programFilesFolder = new File(pathName);
+    private String workingDirectoryPathName = new File("").getAbsolutePath();
+
 
     /**
      * @descrip checks to see if the programFiles directory is created, if it is not, the directory is created.
@@ -23,11 +25,8 @@ public class Manage {
         if (this.programFilesFolder.exists()) {
             System.out.println("Loading Program Files");
         } else {
-            try {
-                this.programFilesFolder.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Something went wrong, program files folder not created.");
-            }
+            this.programFilesFolder.mkdir();
+            System.out.println("Welcome to NoteCards!");
         }
     }
 
@@ -54,6 +53,10 @@ public class Manage {
         return txtFiles;
     }
 
+    /**
+     * @param pathname
+     * @return String array of directories.
+     */
     public static String[] listSections(String pathname) {
         File dir = new File(pathname);
         String[] filenames = dir.list();
@@ -63,15 +66,15 @@ public class Manage {
                 dirCounter++;
             }
         }
-        String[] txtFiles = new String[dirCounter];
+        String[] directories = new String[dirCounter];
         int index = 0;
         for (int i = 0; i < filenames.length; i++) {
             if (new File(pathname + "/" + filenames[i]).isDirectory()) {
-                txtFiles[index++] = filenames[i];
+                directories[index++] = filenames[i];
             }
 
         }
-        return txtFiles;
+        return directories;
     }
 
     /**
@@ -92,15 +95,19 @@ public class Manage {
      */
     public static String chooseFile(String[] arr, Scanner reader) {
         printArray(arr);
-        System.out.println("Choose the file you would like to select by entering the number adjacent to the file listed above.");
-        while (true) {
-            int choice = reader.nextInt();
-            if (choice < arr.length && choice >= 0) {
-                return arr[choice];
-            } else {
-                System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
+        if (arr.length > 0) {
+            System.out.println("Choose the file you would like to select by entering the number adjacent to the file listed above.");
+            while (true) {
+                int choice = reader.nextInt();
+                if (choice < arr.length && choice >= 0) {
+                    return arr[choice];
+                } else {
+                    System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
+                }
             }
         }
+        System.out.println("There are no files to add.");
+        return null;
 
     }
 
@@ -124,20 +131,25 @@ public class Manage {
      * @param reader
      * @descrip moves The File associated with the fileName to the given directory.
      */
-    public static void addFile(File directory, String fileName, Scanner reader) {
+    public void addFile(File directory, String fileName, Scanner reader) {
+        File fileToAdd = new File(this.workingDirectoryPathName + "/" + fileName);
         if (!directory.exists()) {
             System.out.println("Your destination folder does not exist, would you like to create a new one? (Enter\"YES/NO\" )");
             String response = reader.next();
             if (isTrue(response)) {
                 makeDir(directory);
             } else {
+                System.out.println("New directory was NOT be made.");
                 return;
             }
-            File fileToAdd = new File(fileName);
-            String pathName = new File("programFiles").getAbsolutePath();
-            fileToAdd.renameTo(new File(pathName + "/" + directory + "/" + fileName));
-            System.out.println((new File(pathName + "/" + directory + "/" + fileName)));
+            fileToAdd.renameTo(new File(directory + "/" + fileName));
+            System.out.println((new File( directory + "/" + fileName)));
         }
+        else {
+            fileToAdd.renameTo(new File( directory + "/" + fileName));
+            System.out.println((new File(directory + "/" + fileName)));
+        }
+
 
 
     }
@@ -171,7 +183,7 @@ public class Manage {
     }
 
     /**
-     * @escrip overloaded File param makeDir() is used to make a directory
+     * @descrip overloaded File param makeDir() is used to make a directory
      */
     public static void makeDir(File section) {
         if (section.mkdir()) {
