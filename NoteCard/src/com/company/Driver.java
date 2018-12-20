@@ -17,11 +17,12 @@ public class Driver {
 
         String file = Manage.chooseFile(Manage.listTxtFiles(workingDirectoryPathName), reader);
         //String file1 = Manage.chooseFile(Manage.listSections(pathName), reader);
-        System.out.println("What directory would you like to add the file to?");
-        reader.nextLine();
-        String sectionName = reader.nextLine();
-        File directoryTest = new File(programFilesPathName + "/" + sectionName);
-        program.addFile(directoryTest, file, reader);
+//        System.out.println("What directory would you like to add the file to?");
+//        reader.nextLine();
+//        String sectionName = reader.nextLine();
+//        File directoryTest = new File(programFilesPathName + "/" + sectionName);
+//        program.addFile(directoryTest, file, reader);
+        program.makeFile(reader);
         reader.close();
 
 

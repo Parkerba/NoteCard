@@ -1,8 +1,6 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
 /**
@@ -13,8 +11,17 @@ import java.util.Scanner;
  */
 public class Manage {
 
+    /**
+     * @descrip This is the String pathname to the programFiles directory where all of the user determined data is stored.
+     */
     private String pathName = new File("programFiles").getAbsolutePath();
+    /**
+     * @descrip This is the File object that encapsulates the programFiles directory where all of the user determined data is stored.
+     */
     private File programFilesFolder = new File(pathName);
+    /**
+     * @descrip This is the String pathname to the working directory of the program where userSubmitted .txt files may be inputted to the program for later use.
+     */
     private String workingDirectoryPathName = new File("").getAbsolutePath();
 
 
@@ -108,7 +115,6 @@ public class Manage {
         }
         System.out.println("There are no files to add.");
         return null;
-
     }
 
     /**
@@ -143,17 +149,12 @@ public class Manage {
                 return;
             }
             fileToAdd.renameTo(new File(directory + "/" + fileName));
-            System.out.println((new File( directory + "/" + fileName)));
-        }
-        else {
-            fileToAdd.renameTo(new File( directory + "/" + fileName));
+            System.out.println((new File(directory + "/" + fileName)));
+        } else {
+            fileToAdd.renameTo(new File(directory + "/" + fileName));
             System.out.println((new File(directory + "/" + fileName)));
         }
-
-
-
     }
-
 
     /**
      * #descrip makeDir() is used to make a directory
@@ -173,7 +174,6 @@ public class Manage {
                 } else {
                     System.out.println("Something went wrong! Your section was not created please try again.");
                 }
-
             }
         } else if (section.mkdir()) {
             System.out.println("Section created!");
@@ -183,6 +183,7 @@ public class Manage {
     }
 
     /**
+     * @param section
      * @descrip overloaded File param makeDir() is used to make a directory
      */
     public static void makeDir(File section) {
@@ -192,4 +193,98 @@ public class Manage {
             System.out.println("Something went wrong! Your section was not created please try again.");
         }
     }
+
+    public static void writeToFile(String[] arr, String pathName) throws FileNotFoundException {
+        FileOutputStream fos = new FileOutputStream(pathName, true);
+        PrintWriter writer = new PrintWriter(fos);
+        for (String x : arr) {
+            writer.println(x);
+        }
+        writer.close();
+    }
+
+    /**
+     * @param questions
+     * @param answers
+     * @return mergedAndTrimmedArray[]
+     * @descrip Merges the question and answer arrays and trims empty elements from the end of the arrays.
+     */
+    public static String[] mergeAndTrimArrays(String[] questions, String[] answers) {
+        int realElementCounter = 0;
+        for (String x : questions) {
+            if (x == null) {
+                break;
+            } else if (x.length() > 0 && x != null) {
+                realElementCounter++;
+            }
+        }
+
+        String[] mergedArray = new String[realElementCounter * 2];
+        int mergedArrayIndex = 0;
+        for (int i = 0; i < realElementCounter; i++) {
+            mergedArray[mergedArrayIndex++] = questions[i];
+            mergedArray[mergedArrayIndex++] = answers[i];
+        }
+        return mergedArray;
+    }
+
+    public void makeFile(Scanner reader) {
+        //Establish arrays for collecting user provided questions and answers.
+        String[] questions = new String[50];
+        String[] answers = new String[50];
+
+        //Collects the questions and answers from user, stores in questions[] and answers[].
+        String response;
+        int index = 0;
+        do {
+            System.out.println("What should the question (front) of the notecard say?");
+            String q = reader.nextLine();
+            System.out.println("What should the answer (back) of the notecard say?");
+            String a = reader.nextLine();
+            questions[index] = q;
+            answers[index++] = a;
+            System.out.println("Do you have more notecards to make?");
+            response = reader.next();
+            reader.nextLine();
+        } while (isTrue(response));
+
+        //Merges questions[] and answers[] to one array and trims the empty elements.
+        String[] mergedArray = mergeAndTrimArrays(questions, answers);
+        System.out.println("Would you like to add these notecards to an existing file?");
+        response = reader.next();
+        if (isTrue(response)) {
+            System.out.println("Choose the section which has the file you would like to add to.");
+            String chosenDir = chooseFile(listSections(pathName), reader);
+            System.out.println("Now choose the file you would like to add to.");
+            String chosenFilePathname = pathName + "/" + chosenDir + "/" + chooseFile(listTxtFiles(pathName + "/" + chosenDir), reader);
+            try {
+                writeToFile(mergedArray, chosenFilePathname);
+            } catch (FileNotFoundException e) {
+                System.out.println("Something went wrong.");
+            }
+        } else {
+            System.out.println("What would you like to name the file?");
+            reader.nextLine();
+            response = reader.nextLine();
+            String fileName = (response.endsWith(".txt")) ? response : response + ".txt";
+            System.out.println("Would you like to add " + response + "to a section?");
+            response = reader.next();
+            if (!isTrue(response)) {
+                try {
+                    writeToFile(mergedArray, pathName + "/" + fileName);
+                    System.out.println("File created in main directory, to use add it to a section");
+                } catch (FileNotFoundException e) {
+                    System.out.println("File unable to be created.");
+                }
+            }
+            try {
+                writeToFile(mergedArray, pathName + "/" + chooseFile(listSections(pathName), reader) + "/" + fileName);
+            } catch (FileNotFoundException e) {
+                System.out.println("File unable to be created");
+            }
+        }
+    }
+
+
 }
+
