@@ -5,16 +5,24 @@ import java.util.Scanner;
 import java.io.File;
 
 /**
+ * @descrip Class contains methods to draw data from the files, and allows the data to be used for practical purposes.
  * @author Parker Amundsen
  * @version 12/20/2018
  */
 public class Program {
+
+    /**
+     * @descrip Welcome() prints a welcome message to the user on startup.
+     * @throws Exception
+     */
     public void welcome() throws Exception {
-        System.out.println("Notecards is an application that makes studying with notecards much easier!");
+        //TODO: CREATE WELCOME DIALOGUE
+        System.out.println("CREATE WELCOME DIALOGUE");
         resumeOnEnter();
     }
 
     /**
+     * @descrip Prints an brief explanation of how to add notecards to the program.
      * @throws Exception
      */
     public void howToMakeNoteCards() throws Exception {
@@ -29,28 +37,38 @@ public class Program {
                 "           Question\n" +
                 "           Answer\n" +
                 "   - Starting with the first Question and alternating between Question and Answer on new lines.");
-        //TODO add dialogue for creating notecards within the program.
+        //TODO: add dialogue for creating notecards within the program.
     }
 
+    /**
+     * @descrip Pauses the program until the user pressed the "enter" key.
+     * @throws Exception
+     */
     public static void resumeOnEnter() throws Exception {
         System.in.read();
     }
 
     /**
-     * @param fis
-     * @param fis2
-     * @return
+     * @descrip
+     * @param fis (used for counting number of lines in the file)
+     * @param fis2 (used for reading the file and creating NoteCard[])
+     * @return noteCardSet[] array
      */
     public NoteCard[] makeNoteCards(FileInputStream fis, FileInputStream fis2) {
         NoteCard[] noteCardSet;
+        //Scanner object reader is used to count the number of lines in the file.
         Scanner reader = new Scanner(fis);
+        //Scanner object is used to reader the questions and answers for the return NoteCard[] from the file.
         Scanner reader2 = new Scanner(fis2);
+        //counts lines in the file
         int lineCounter = 0;
         while (reader.hasNextLine()) {
             lineCounter++;
             reader.nextLine();
         }
+        //Establishing the size noteCardSet[] using from the number of question and answer sets.
         noteCardSet = new NoteCard[lineCounter / 2];
+        //Creating the NoteCard objects and putting them in a NoteCard array.
         for (int i = 0; i < lineCounter / 2; i++) {
             String question = reader2.nextLine();
             String answer = reader2.nextLine();
@@ -59,10 +77,16 @@ public class Program {
         return noteCardSet;
     }
 
+    /**
+     *
+     * @param noteCards
+     * @param original This is the original NoteCard[] to be carried through recursion as a passed param.
+     * @throws Exception
+     */
     public void run(NoteCard[] noteCards, NoteCard[] original) throws Exception {
-        NoteCard[] originalNotecard = original;
         Scanner keyboard = new Scanner(System.in);
-        int incorrectCounter = 0;
+        int incorrectCounter = 0; //To be used when creating new NoteCard[] filled with NoteCards that were answered incorrectly.
+
         for (int i = 0; i < noteCards.length; i++) {
             System.out.println(noteCards[i].getQuestion() + "\nPress enter to reveal the answer.");
             resumeOnEnter();
@@ -109,6 +133,12 @@ public class Program {
         }
     }
 
+    /**
+     *
+     * @param noteCards
+     * @param numIncorrect
+     * @return Filters NoteCard[] and returns array containing NoteCards with boolean datamember correct == false.
+     */
     public NoteCard[] incorrect(NoteCard[] noteCards, int numIncorrect) {
         NoteCard[] incorrectArray = new NoteCard[numIncorrect];
         int incorrectArrayIndex = 0;
