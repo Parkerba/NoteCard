@@ -12,6 +12,23 @@ public class NoteCard {
      */
     private String question;
     private String answer;
+    private boolean Correct;
+
+    /**
+     * @descrip Setter for boolean data member Correct
+     * @param gotCorrect
+     */
+    public void setCorrect(boolean gotCorrect) {
+        this.Correct = gotCorrect;
+    }
+
+    /**
+     * @descrip Getter for the boolean data member Correct
+     * @return
+     */
+    public boolean isCorrect() {
+        return Correct;
+    }
 
     /**
      * @descrip NoteCard obj constructor, takes two String parameters.
@@ -21,6 +38,7 @@ public class NoteCard {
     public NoteCard(String question, String answer){
         this.answer = answer;
         this.question = question;
+        this.Correct = true;
     }
 
     /**

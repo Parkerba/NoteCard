@@ -194,6 +194,12 @@ public class Manage {
         }
     }
 
+    /**
+     *
+     * @param arr
+     * @param pathName
+     * @throws FileNotFoundException
+     */
     public static void writeToFile(String[] arr, String pathName) throws FileNotFoundException {
         FileOutputStream fos = new FileOutputStream(pathName, true);
         PrintWriter writer = new PrintWriter(fos);
@@ -228,6 +234,10 @@ public class Manage {
         return mergedArray;
     }
 
+    /**
+     *
+     * @param reader
+     */
     public void makeFile(Scanner reader) {
         //Establish arrays for collecting user provided questions and answers.
         String[] questions = new String[50];

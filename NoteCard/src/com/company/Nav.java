@@ -1,5 +1,5 @@
 package com.company;
 
-public class Nav {
+public class Nav extends Manage {
 
 }
