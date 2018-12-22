@@ -61,6 +61,9 @@ public class Program extends Manage {
                             break;
 
                         case "Move a NoteCard file to a Section":
+                            String chosenFile = chooseFile(listTxtFiles(workingDirectoryPathName),keyboard);
+                            String chosenDirPathname = pathName + "/" + chooseFile(listSections(pathName),keyboard);
+                            addFile(new File(chosenDirPathname), chosenFile, keyboard);
                             break;
 
                         case "Back to Home":
