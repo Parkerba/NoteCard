@@ -4,16 +4,87 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 import java.io.File;
 
+
 /**
- * @descrip Class contains methods to draw data from the files, and allows the data to be used for practical purposes.
  * @author Parker Amundsen
  * @version 12/20/2018
+ * @descrip Class contains methods to draw data from the files, and allows the data to be used for practical purposes.
  */
-public class Program {
+public class Program extends Manage {
+    /**
+     * @descrip This is the String pathname to the programFiles directory where all of the user determined data is stored.
+     */
+    private String pathName = new File("programFiles").getAbsolutePath();
+    /**
+     * @descrip This is the File object that encapsulates the programFiles directory where all of the user determined data is stored.
+     */
+    private File programFilesFolder = new File(pathName);
+    /**
+     * @descrip This is the String pathname to the working directory of the program where userSubmitted .txt files may be inputted to the program for later use.
+     */
+    private String workingDirectoryPathName = new File("").getAbsolutePath();
+
+    public void execute() throws Exception {
+        Scanner keyboard = new Scanner(System.in);
+        String makeSelection = "Enter the number adjacent to the Actions listed above.";
+        String[] home = {"Review NoteCards", "NoteCard Manager", "How to/About", "Exit NoteCards"};
+        String[] noteCardManager = {"Create a Section", "Create NoteCards", "Move a NoteCard file to a Section", "Back to Home"};
+        Boolean keepRunning = true;
+        while (keepRunning) {
+            String homeChoice = chooseFile(home, keyboard);
+            switch (homeChoice) {
+
+                case "Review NoteCards":
+                    String chosenSectionPathname = this.pathName + "/" +chooseFile(listSections(this.pathName),keyboard);
+                    String chosenFilePathname = chosenSectionPathname + "/" + chooseFile(listTxtFiles(chosenSectionPathname),keyboard);
+                    FileInputStream lineCounter = new FileInputStream(chosenFilePathname);
+                    FileInputStream noteCardReader = new FileInputStream(chosenFilePathname);
+                    NoteCard[] noteCards = makeNoteCards(lineCounter,noteCardReader);
+                    run(noteCards,noteCards);
+
+                    break;
+
+                case "NoteCard Manager":
+                    String managerChoice = chooseFile(noteCardManager,keyboard);
+                    switch (managerChoice) {
+                        case "Create a Section":
+                            System.out.println("What would you like to name the section?");
+                            keyboard.nextLine();
+                            String sectionName = keyboard.nextLine();
+                            String sectionPathName = this.pathName + "/" + sectionName;
+                            makeDir(new File(sectionPathName));
+                            break;
+
+                        case "Create NoteCards":
+                            keyboard.nextLine();
+                            makeFile(keyboard);
+                            break;
+
+                        case "Move a NoteCard file to a Section":
+                            break;
+
+                        case "Back to Home":
+                            break;
+                    }
+                    break;
+
+                case "How to/About":
+                    howToMakeNoteCards();
+                    break;
+
+                case "Exit NoteCards":
+                    System.out.println("Goodbye!");
+                    System.exit(0);
+                    break;
+
+            }
+
+        }
+    }
 
     /**
-     * @descrip Welcome() prints a welcome message to the user on startup.
      * @throws Exception
+     * @descrip Welcome() prints a welcome message to the user on startup.
      */
     public void welcome() throws Exception {
         //TODO: CREATE WELCOME DIALOGUE
@@ -22,8 +93,8 @@ public class Program {
     }
 
     /**
-     * @descrip Prints an brief explanation of how to add notecards to the program.
      * @throws Exception
+     * @descrip Prints an brief explanation of how to add notecards to the program.
      */
     public void howToMakeNoteCards() throws Exception {
         System.out.println("With the Notecards app you can add Notecards two ways.\n1. Drag and Drop. \n2. Create in Notecards.");
@@ -41,18 +112,24 @@ public class Program {
     }
 
     /**
-     * @descrip Pauses the program until the user pressed the "enter" key.
      * @throws Exception
+     * @descrip Pauses the program until the user pressed the "enter" key.
      */
     public static void resumeOnEnter() throws Exception {
         System.in.read();
     }
 
+    public static boolean isValid(int input, int max) {
+        if (input >= 0 && input < max) {
+            return true;
+        } return false;
+    }
+
     /**
-     * @descrip
-     * @param fis (used for counting number of lines in the file)
+     * @param fis  (used for counting number of lines in the file)
      * @param fis2 (used for reading the file and creating NoteCard[])
      * @return noteCardSet[] array
+     * @descrip
      */
     public NoteCard[] makeNoteCards(FileInputStream fis, FileInputStream fis2) {
         NoteCard[] noteCardSet;
@@ -78,9 +155,8 @@ public class Program {
     }
 
     /**
-     *
      * @param noteCards
-     * @param original This is the original NoteCard[] to be carried through recursion as a passed param.
+     * @param original  This is the original NoteCard[] to be carried through recursion as a passed param.
      * @throws Exception
      */
     public void run(NoteCard[] noteCards, NoteCard[] original) throws Exception {
@@ -117,7 +193,8 @@ public class Program {
                 if (incorrect.length == 0) {
                     System.out.println("You got them all correct!");
                     break;
-                } run(incorrect, original);
+                }
+                run(incorrect, original);
                 break;
 
             case 2:
@@ -134,7 +211,6 @@ public class Program {
     }
 
     /**
-     *
      * @param noteCards
      * @param numIncorrect
      * @return Filters NoteCard[] and returns array containing NoteCards with boolean datamember correct == false.

@@ -145,7 +145,7 @@ public class Manage {
             if (isTrue(response)) {
                 makeDir(directory);
             } else {
-                System.out.println("New directory was NOT be made.");
+                System.out.println("New directory was NOT made.");
                 return;
             }
             fileToAdd.renameTo(new File(directory + "/" + fileName));
