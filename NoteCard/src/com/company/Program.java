@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.File;
 
@@ -35,17 +36,22 @@ public class Program extends Manage {
             switch (homeChoice) {
 
                 case "Review NoteCards":
-                    String chosenSectionPathname = this.pathName + "/" +chooseFile(listSections(this.pathName),keyboard);
-                    String chosenFilePathname = chosenSectionPathname + "/" + chooseFile(listTxtFiles(chosenSectionPathname),keyboard);
-                    FileInputStream lineCounter = new FileInputStream(chosenFilePathname);
-                    FileInputStream noteCardReader = new FileInputStream(chosenFilePathname);
-                    NoteCard[] noteCards = makeNoteCards(lineCounter,noteCardReader);
-                    run(noteCards,noteCards);
-
+                    String chosenSectionPathname = this.pathName + "/" + chooseFile(listSections(this.pathName), keyboard);
+                    String chosenFilePathname = chosenSectionPathname + "/" + chooseFile(listTxtFiles(chosenSectionPathname), keyboard);
+                    try {
+                        FileInputStream lineCounter = new FileInputStream(chosenFilePathname);
+                        FileInputStream noteCardReader = new FileInputStream(chosenFilePathname);
+                        NoteCard[] noteCards = makeNoteCards(lineCounter, noteCardReader);
+                        run(noteCards, noteCards);
+                    } catch (FileNotFoundException e){
+                        System.out.println("There are no NoteCard sets in this directory.");
+                        break;
+                    }
                     break;
 
                 case "NoteCard Manager":
-                    String managerChoice = chooseFile(noteCardManager,keyboard);
+                    String managerChoice = chooseFile(noteCardManager, keyboard);
+
                     switch (managerChoice) {
                         case "Create a Section":
                             System.out.println("What would you like to name the section?");
@@ -61,8 +67,8 @@ public class Program extends Manage {
                             break;
 
                         case "Move a NoteCard file to a Section":
-                            String chosenFile = chooseFile(listTxtFiles(workingDirectoryPathName),keyboard);
-                            String chosenDirPathname = pathName + "/" + chooseFile(listSections(pathName),keyboard);
+                            String chosenFile = chooseFile(listTxtFiles(workingDirectoryPathName), keyboard);
+                            String chosenDirPathname = pathName + "/" + chooseFile(listSections(pathName), keyboard);
                             addFile(new File(chosenDirPathname), chosenFile, keyboard);
                             break;
 
@@ -125,7 +131,8 @@ public class Program extends Manage {
     public static boolean isValid(int input, int max) {
         if (input >= 0 && input < max) {
             return true;
-        } return false;
+        }
+        return false;
     }
 
     /**

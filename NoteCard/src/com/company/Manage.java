@@ -1,6 +1,7 @@
 package com.company;
 
 import java.io.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -103,17 +104,23 @@ public class Manage {
     public static String chooseFile(String[] arr, Scanner reader) {
         printArray(arr);
         if (arr.length > 0) {
-            System.out.println("Choose the file you would like to select by entering the number adjacent to the file listed above.");
+            System.out.println("To select enter one of the numbers above.");
             while (true) {
-                int choice = reader.nextInt();
-                if (choice < arr.length && choice >= 0) {
-                    return arr[choice];
-                } else {
-                    System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
+                try {
+                    int choice = reader.nextInt();
+                    if (choice < arr.length && choice >= 0) {
+                        return arr[choice];
+                    } else {
+                        System.out.println("Invalid input. Try again values must be between 0 and " + (arr.length - 1) + ".");
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("You must enter ONLY whole numbers please try again.");
+                    reader.nextLine();
                 }
+
             }
         }
-        System.out.println("There are no files to add.");
+        System.out.println("No files found.");
         return null;
     }
 
@@ -195,7 +202,6 @@ public class Manage {
     }
 
     /**
-     *
      * @param arr
      * @param pathName
      * @throws FileNotFoundException
@@ -235,7 +241,6 @@ public class Manage {
     }
 
     /**
-     *
      * @param reader
      */
     public void makeFile(Scanner reader) {
