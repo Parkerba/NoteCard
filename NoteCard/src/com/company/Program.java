@@ -30,8 +30,7 @@ public class Program extends Manage {
         String makeSelection = "Enter the number adjacent to the Actions listed above.";
         String[] home = {"Review NoteCards", "NoteCard Manager", "How to/About", "Exit NoteCards"};
         String[] noteCardManager = {"Create a Section", "Create NoteCards", "Move a NoteCard file to a Section", "Back to Home"};
-        Boolean keepRunning = true;
-        while (keepRunning) {
+        while (true) {
             String homeChoice = chooseFile(home, keyboard);
             switch (homeChoice) {
 
@@ -189,7 +188,7 @@ public class Program extends Manage {
         int nextMove;
 
         do {
-            System.out.println("Would you like to:\n 1. review the notecards you missed \n2.Review all the notecards you just covered. \n3.Review all the notecards in this file. \n4.Exit");
+            System.out.println("Would you like to:\n1. review the notecards you missed \n2.Review all the notecards you just covered. \n3.Review all the notecards in this file. \n4.Exit");
             nextMove = keyboard.nextInt();
             if (nextMove > 4 || nextMove < 1) {
                 System.out.println("Please enter a number corresponding to the next action listed above. (between 1 and 4)\n Press enter to try again.");
