@@ -1,4 +1,5 @@
 package com.company;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HomeController {
+public class HomeController extends Controller {
     private AnchorPane content;
 
     private Button reviewNotecardsHome;
@@ -32,31 +33,20 @@ public class HomeController {
 
     /**
      * This method is called when the "review notecards" button is pressed in the main scene. It switches scenes to "ReviewNotecards.fxml".
+     *
      * @param event
      * @throws IOException
      */
-    public void onReviewNotecards(ActionEvent event) throws IOException{
-          switchScenes(event,"ReviewNotecards.fxml");
+    public void onReviewNotecards(ActionEvent event) throws IOException {
+        switchScenes(event, "ReviewNotecards.fxml");
     }
 
     /**
-     * This method is used to switch scenes on the ActionEvent to the FXML file provided as the String parameter.
-     * @param event
-     * @param fxml
-     * @throws IOException
-     */
-    public void switchScenes(ActionEvent event, String fxml) throws IOException{
-        Parent root = FXMLLoader.load(getClass().getResource(fxml));
-        Scene newScene = new Scene(root, 800,450);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(newScene);
-        window.show();
-    }
-    /**
      * On pressing the button exit the program will be terminated.
+     *
      * @param
      */
-    public void onExit(ActionEvent event){
+    public void onExit(ActionEvent event) {
         System.exit(0);
     }
 
